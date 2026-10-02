@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MovieHub - Discover Movies</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-content">
+      <h1 class="logo">🎬 MovieHub</h1>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for a movie...">
+      </div>
+      <div class="header-actions">
+        <select id="genreFilter">
+          <option value="">All Genres</option>
+        </select>
+        <button id="watchlistBtn">⭐ Watchlist</button>
+        <button id="themeToggle">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="sectionTitle">
+      <h2 id="currentSectionTitle">Trending Movies</h2>
+    </section>
+
+    <section id="movieGrid" class="movie-grid"></section>
+
+    <p id="noResults" class="hidden">No movies found. Try another search.</p>
+  </main>
+
+  <div id="movieModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close-btn">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="watchlistModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeWatchlist" class="close-btn">&times;</span>
+      <h2>My Watchlist</h2>
+      <div id="watchlistGrid" class="movie-grid"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Built with HTML, CSS & JS | Powered by TMDB API</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
