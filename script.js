@@ -116,7 +116,15 @@ async function fetchJSON(path, params = {}) {
   const url = new URL(BASE_URL + path);
   url.searchParams.set("api_key", API_KEY);
   Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
-  const res = await fetch(url);
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (e) {
+    // the request never reached TMDB (no internet, blocked network, ad-blocker...)
+    const netErr = new Error(e.message || "network error");
+    netErr.network = true;
+    throw netErr;
+  }
   if (!res.ok) {
     const err = new Error("HTTP " + res.status);
     err.status = res.status;
@@ -129,8 +137,11 @@ function friendlyError(err) {
   if (err.message === "NO_KEY") return "API key missing. Open script.js and paste your TMDB key on line 7.";
   if (err.status === 401) return "TMDB did not accept the API key. Please check the key in script.js.";
   if (err.status === 429) return "Too many requests. Wait a few seconds and try again.";
-  if (err instanceof TypeError) return "No internet connection. Please check your network.";
-  return "Something went wrong (" + err.message + ").";
+  if (err.network) {
+    return "Cannot reach TMDB (" + err.message + "). First check your internet. If the internet works, TMDB may be blocked " +
+           "on this network: try a mobile hotspot, another Wi-Fi, a VPN, or set your DNS to 1.1.1.1.";
+  }
+  return "Something went wrong (" + err.name + ": " + err.message + ").";
 }
 
 /* ---------- INIT ---------- */
