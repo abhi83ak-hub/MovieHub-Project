@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MovieHub - Discover Movies</title>
+  <title>MovieHub - AI Movie Recommender</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Header -->
   <header class="header">
     <div class="header-content">
       <h1 class="logo">🎬 MovieHub</h1>
@@ -15,44 +16,91 @@
         <input type="text" id="searchInput" placeholder="Search for a movie...">
       </div>
       <div class="header-actions">
-        <select id="genreFilter">
+        <select id="genreFilter" aria-label="Filter by genre">
           <option value="">All Genres</option>
         </select>
-        <button id="watchlistBtn">⭐ Watchlist</button>
-        <button id="themeToggle">🌙</button>
+        <button id="aiBtn" title="See how the AI works">🤖 AI Lab</button>
+        <button id="surpriseBtn" title="Pick a good movie for me">🎲 Surprise me</button>
+        <button id="watchlistBtn">⭐ Watchlist <span id="watchCount" class="count hidden">0</span></button>
+        <button id="themeToggle" aria-label="Toggle theme">🌙</button>
       </div>
     </div>
   </header>
 
+  <!-- Main content -->
   <main>
-    <section id="sectionTitle">
+    <div id="tabBar" class="chip-row"></div>
+    <div class="chip-row mood-row">
+      <span class="chip-label">Mood:</span>
+      <div id="moodBar" class="chip-row inline"></div>
+    </div>
+
+    <section id="sectionTitle" class="section-head">
       <h2 id="currentSectionTitle">Trending Movies</h2>
+      <select id="sortSelect" aria-label="Sort movies">
+        <option value="default">Sort: Default</option>
+        <option value="rating">Rating (high to low)</option>
+        <option value="newest">Newest first</option>
+        <option value="az">Title A to Z</option>
+      </select>
     </section>
 
-    <section id="movieGrid" class="movie-grid"></section>
+    <section id="movieGrid" class="movie-grid">
+      <!-- Movie cards get inserted here by JS -->
+    </section>
 
     <p id="noResults" class="hidden">No movies found. Try another search.</p>
+    <div id="statusMsg" class="status hidden"></div>
+    <div class="center">
+      <button id="loadMoreBtn" class="btn hidden">Load more</button>
+    </div>
   </main>
 
+  <!-- Movie Detail Modal -->
   <div id="movieModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="closeModal" class="close-btn">&times;</span>
-      <div id="modalBody"></div>
+    <div class="modal-content wide">
+      <span id="closeModal" class="close-btn" aria-label="Close">&times;</span>
+      <div id="modalBody">
+        <!-- Filled dynamically by JS -->
+      </div>
     </div>
   </div>
 
+  <!-- Watchlist Modal -->
   <div id="watchlistModal" class="modal hidden">
-    <div class="modal-content">
-      <span id="closeWatchlist" class="close-btn">&times;</span>
+    <div class="modal-content wide">
+      <span id="closeWatchlist" class="close-btn" aria-label="Close">&times;</span>
       <h2>My Watchlist</h2>
+      <p id="watchSummary" class="muted small"></p>
+      <div class="watch-tools">
+        <div id="watchFilterBar" class="chip-row inline">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="todo">To watch</button>
+          <button class="chip" data-filter="done">Watched</button>
+        </div>
+        <button id="pickFromWatchlist" class="btn">🎲 Pick one for tonight</button>
+      </div>
       <div id="watchlistGrid" class="movie-grid"></div>
     </div>
   </div>
 
+  <!-- AI Lab Modal -->
+  <div id="aiModal" class="modal hidden">
+    <div class="modal-content wide">
+      <span id="closeAI" class="close-btn" aria-label="Close">&times;</span>
+      <div id="aiBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
   <footer class="footer">
-    <p>Built with HTML, CSS & JS | Powered by TMDB API</p>
+    <p>Built with HTML, CSS &amp; JS | AI runs in your browser, your taste data stays on your device</p>
+    <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+    <p>Streaming availability data provided by JustWatch.</p>
   </footer>
 
+  <script src="ai.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
